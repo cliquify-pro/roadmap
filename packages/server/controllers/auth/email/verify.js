@@ -26,10 +26,12 @@ exports.verify = async (req, res) => {
 
     /**
      * sending token as response is for
-     * development/testing/staging environment
+     * development/testing environment
      */
     const __token =
-      process.env.NODE_ENV !== "production"
+      process.env.NODE_ENV === "development" ||
+      process.env.NODE_ENV === "testing" ||
+      process.env.NODE_ENV === "ci"
         ? {
             ...emailVerification,
           }
@@ -37,8 +39,8 @@ exports.verify = async (req, res) => {
 
     res.status(200).send({
       verify: {
-        success: emailVerification,
-        ...__token,
+        success: Boolean(emailVerification.createdAt),
+        __token,
       },
     });
   } catch (err) {
