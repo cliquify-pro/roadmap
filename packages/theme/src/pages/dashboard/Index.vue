@@ -26,7 +26,7 @@
       </Table>
     </div>
     <div class="dashboard-overview-boards">
-      <div class="table-heading">Boards</div>
+      <div class="table-heading">Tags</div>
       <Table>
         <template #header>
           <div class="table-header-item boards-table-color" />

@@ -2,7 +2,7 @@
 	<div>
 		<header class="form-header">
 			<breadcrumbs>
-				<h5 class="breadcrum-item">Boards</h5>
+				<h5 class="breadcrum-item">Tags</h5>
 			</breadcrumbs>
 
 			<Button
@@ -219,7 +219,7 @@ async function deleteBoardHandler(id: string, index: number) {
 }
 
 useHead({
-	title: "Boards • Dashboard"
+	title: "Tags • Dashboard"
 })
 </script>
 

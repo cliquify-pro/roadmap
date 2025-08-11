@@ -21,7 +21,7 @@
 
 <script lang="ts">
 export default {
-  name: "Boards",
+  name: "Tags",
 };
 </script>
 
@@ -66,11 +66,11 @@ async function getBoards() {
 }
 
 useHead({
-	title: "Boards",
+	title: "Tags",
 	meta: [
 		{
 			name: "og:title",
-			content: () => `Boards • ${siteSettings.title}`
+			content: () => `Tags • ${siteSettings.title}`
 		}
 	]
 })

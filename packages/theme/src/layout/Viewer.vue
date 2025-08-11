@@ -1,11 +1,13 @@
 <template>
   <div>
-    <Header />
-    <div class="w-full max-w-6xl mx-auto px-6 my-8">
-      <router-view />
+    <UserDashboardLayout/>
+    <!-- <Header /> -->
+    <!-- <div class="w-full mx-auto px-6 my-8"> -->
 
-      <power-by v-if="settingsStore.get.isPoweredBy" />
-    </div>
+      <!-- <router-view /> -->
+
+      <!-- <power-by v-if="settingsStore.get.isPoweredBy" /> -->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -15,6 +17,7 @@ import { useSettingStore } from "../store/settings";
 // components
 import Header from "../components/Header.vue";
 import PowerBy from "../components/PowerBy.vue";
+import UserDashboardLayout from "./UserDashboardLayout.vue";
 
 const settingsStore = useSettingStore();
 </script>

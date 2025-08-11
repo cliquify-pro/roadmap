@@ -18,7 +18,7 @@ const routes = [
       },
       {
         path: "boards",
-        name: "Boards",
+        name: "Tags",
         component: () => import("./pages/boards/Index.vue"),
       },
       {

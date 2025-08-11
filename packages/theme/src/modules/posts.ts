@@ -15,16 +15,29 @@ export interface PostType {
   contentMarkdown?: string;
   createdAt: string;
   updatedAt: string;
+  date: string; // Added
+  release_date: string | null; // Added, nullable
+  public: "Yes" | "No"; // Added
+  media_url?: string;
 }
 
 interface GetPostArgs extends ApiPaginationType {
   boardId?: string[];
   roadmapId?: string;
+  date?: string; // Filter by date
+  release_date?: string; // Filter by release date
+  public?: "Yes" | "No"; // Filter by visibility
+  media_url?: string;
 }
 
 interface CreatePostArgs {
   title: string;
   contentMarkdown?: string;
+  roadmapId?: string;
+  date: string; // Required for quarter filtering
+  release_date?: string; // Optional
+  public: "Yes" | "No"; // Required
+  media_url?: string;
 }
 
 export interface UpdatePostArgs extends CreatePostArgs {
@@ -56,7 +69,6 @@ interface AddCommentArgs {
  */
 export const createPost = async (boardId: string, post: CreatePostArgs) => {
   const { getUserId, authToken } = useUserStore();
-
   return await axios({
     method: "POST",
     url: `${VITE_API_URL}/api/v1/posts`,
@@ -65,6 +77,11 @@ export const createPost = async (boardId: string, post: CreatePostArgs) => {
       contentMarkdown: post.contentMarkdown,
       userId: getUserId,
       boardId,
+      roadmapId: post.roadmapId,
+      date: post.date,
+      release_date: post.release_date,
+      public: post.public || "Yes",
+      media_url: post.media_url,
     },
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -81,6 +98,9 @@ export const createPost = async (boardId: string, post: CreatePostArgs) => {
  * @param {string} userId logged in user UUID
  * @param {string[]} boardId array of board UUIDs
  * @param {string} roadmapId array of roadmap UUIDs
+ * @param {string} date filter by date
+ * @param {string} release_date filter by release date
+ * @param {string} public filter by visibility (Yes/No)
  *
  * @returns {object} response
  */
@@ -90,6 +110,9 @@ export const getPosts = async ({
   sort = "DESC",
   boardId = [],
   roadmapId = "",
+  date = "",
+  release_date = "",
+  public: visibility,
 }: GetPostArgs) => {
   const { getUserId } = useUserStore();
 
@@ -103,6 +126,9 @@ export const getPosts = async ({
       userId: getUserId,
       boardId,
       roadmapId,
+      date,
+      release_date,
+      public: visibility,
     },
   });
 };
@@ -138,17 +164,20 @@ export const getPostBySlug = async (slug: string) => {
  * @param {string} post.userId post author UUID
  * @param {string} post.boardId post board UUID
  * @param {string} post.roadmapId post roadmap UUID
+ * @param {string} post.date post date
+ * @param {string} post.release_date post release date
+ * @param {string} post.public post visibility
  *
  * @returns {object} response
  */
 export const updatePost = async (post: UpdatePostArgs) => {
   const { authToken } = useUserStore();
-
   return await axios({
     method: "PATCH",
     url: `${VITE_API_URL}/api/v1/posts`,
     data: {
       ...post,
+      public: post.public || "Yes", // Default to Yes if not provided
     },
     headers: {
       Authorization: `Bearer ${authToken}`,

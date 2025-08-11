@@ -1,5 +1,13 @@
 <template>
-  <div class="flex flex-col-reverse lg:flex-row mb-16 lg:space-x-8">
+  <div class="filter">
+      <div>
+        <div class="roadmap-title"><h2>Feature ideas</h2></div>
+        <div><input type="text"/></div>
+      </div>
+      <div class="filter-box">
+      </div>
+    </div>
+  <div class="homepage-container flex flex-col-reverse lg:flex-row mb-16 lg:space-x-8">
     <main class="grow-[2] shrink basis-0">
       <post-item
         v-for="post in posts"
@@ -91,3 +99,12 @@ useHead({
 	]
 })
 </script>
+
+<style lang='sass'>
+.homepage-container
+  width: 100%
+  max-width: 100% // Ensure no max-width constraints
+  margin: 0 auto
+  padding: 0 1rem // Optional: Add some padding for content
+  box-sizing: border-box
+</style>
