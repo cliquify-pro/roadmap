@@ -14,7 +14,7 @@
       <li>
         <router-link to="/dashboard/boards" class="sidebar-list-item">
           <board-icon />
-          <p>Boards</p>
+          <p>Tags</p>
         </router-link>
       </li>
       <li>
@@ -166,7 +166,8 @@ $white: var(--color-white)
 	position: sticky
 	top: 0
 	bottom: 0
-	background-color: var(--color-brand-color)
+	background: radial-gradient(118.28% 183.68% at 67.22% 97.4%, #5443B1 0%, #5F4176 100%)
+
 	height: 100vh
 	padding: 1rem
 	min-width: 200px

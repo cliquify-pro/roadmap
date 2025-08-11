@@ -1,6 +1,8 @@
 <template>
-  <header class="header bg-(--color-brand-color)">
-    <div class="w-full max-w-6xl mx-auto">
+  <header class="header" :style="{
+      background: 'radial-gradient(118.28% 183.68% at 67.22% 97.4%, #5443B1 0%, #5F4176 100%)'
+    }">
+    <div class="w-full  mx-auto">
       <div class="flex items-center justify-between py-4 px-6">
         <site-branding :title="settingsStore.get.title" :logo="settingsStore.get.logo" text-color="white" />
         <nav>
@@ -55,6 +57,7 @@
       </div>
 
       <navbar class="mt-2" />
+       <!-- <Sidebar/> -->
     </div>
   </header>
 </template>
@@ -81,6 +84,7 @@ import DropdownItem from "./ui/dropdown/DropdownItem.vue";
 import DropdownSpacer from "./ui/dropdown/DropdownSpacer.vue";
 import Button from "./ui/Button.vue";
 import { Avatar } from "./ui/Avatar";
+import Sidebar from "./Sidebar.vue";
 
 const settingsStore = useSettingStore();
 const userStore = useUserStore();
@@ -106,7 +110,9 @@ const showVersion = computed(() => {
 });
 
 const version = computed(() => {
-  return process.env.version;
+  // return process.env.version;
+  // return import.meta.env.VITE_APP_VERSION;
+  return null;
 });
 </script>
 

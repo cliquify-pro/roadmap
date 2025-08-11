@@ -3,6 +3,7 @@
     :style="{
       '--color-brand-color': `#${settingsStore.get.accentColor}`
     }"
+    class="app-container"
   >
     <div class="alerts">
       <Alert
@@ -101,7 +102,7 @@ useHead({
     },
     {
       name: "description",
-      content: () => `${settingsStore.get.description}. Powered By LogChimp.`,
+      content: () => `${settingsStore.get.description}. Powered By Cliquify.`,
     },
     {
       name: "robots",
@@ -127,7 +128,7 @@ useHead({
     },
     {
       name: "og:description",
-      content: () => `${settingsStore.get.description}. Powered By LogChimp.`,
+      content: () => `${settingsStore.get.description}. Powered By Cliquify.`,
     },
 
     {
@@ -143,9 +144,16 @@ useHead({
 </script>
 
 <style lang='sass'>
+.app-container
+  width: 100vw // Full viewport width
+  min-height: 100vh // Optional: Ensure it takes at least full viewport height
+  margin: 0
+  padding: 0
+  box-sizing: border-box
+
 .alerts
-	position: fixed
-	top: 1.5rem
-	right: 1.5rem
-	z-index: 10
+  position: fixed
+  top: 1.5rem
+  right: 1.5rem
+  z-index: 10
 </style>

@@ -1,11 +1,13 @@
 const startTime = Date.now();
-
+const express = require("express");
+const path = require("path");
 const database = require("./database");
 const app = require("./app");
 
 // utils
 const logger = require("./utils/logger");
 const logchimpConfig = require("./utils/logchimpConfig");
+const uploadRoute = require("./routes/upload");
 
 // run database migrations
 database.migrate
@@ -38,6 +40,12 @@ const config = logchimpConfig();
 // start express server at SERVER_PORT
 const port = process.env.PORT || config.server.port || 3000;
 const host = config.server.host || "0.0.0.0";
+
+app.use("/api/v1", uploadRoute);
+app.use(
+  "/content/images",
+  express.static(path.join(__dirname, "../content/images")),
+);
 
 app.listen(port, host, async () => {
   logger.info(`LogChimp is running in ${process.env.NODE_ENV}...`);
