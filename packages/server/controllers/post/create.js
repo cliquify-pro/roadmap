@@ -7,8 +7,21 @@ const database = require("../../database");
 // utils
 const { validUUID } = require("../../helpers");
 const logger = require("../../utils/logger");
+const multer = require("multer");
+const path = require("path");
 
 const error = require("../../errorResponse.json");
+// Configure multer for file upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/"); // Save files in 'uploads' folder
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`); // Unique filename
+  },
+});
+
+const upload = multer({ storage: storage });
 
 exports.create = async (req, res) => {
   const userId = req.user.userId;
@@ -17,6 +30,11 @@ exports.create = async (req, res) => {
   const title = req.body.title;
   const contentMarkdown = req.body.contentMarkdown;
   const boardId = validUUID(req.body.boardId);
+  const roadmapId = req.body.roadmapId ? validUUID(req.body.roadmapId) : null;
+  const date = req.body.date; // New field
+  const release_date = req.body.release_date || null; // New field, nullable
+  const isPublic = req.body.public || "Yes";
+  const media_url = req.body.media_url || null;
 
   const checkPermission = permissions.includes("post:create");
   if (!checkPermission) {
@@ -26,7 +44,7 @@ exports.create = async (req, res) => {
     });
   }
 
-  if (!(title && boardId)) {
+  if (!(title && boardId && date)) {
     return res.status(400).send({
       errors: [
         title
@@ -41,7 +59,13 @@ exports.create = async (req, res) => {
               message: error.api.boards.boardIdMissing,
               code: "BOARD_ID_MISSING",
             },
-      ],
+        date
+          ? ""
+          : {
+              message: "Date is required",
+              code: "DATE_MISSING",
+            },
+      ].filter((e) => e),
     });
   }
 
@@ -65,6 +89,11 @@ exports.create = async (req, res) => {
         contentMarkdown,
         userId,
         boardId,
+        roadmap_id: roadmapId,
+        date, // New
+        release_date, // New
+        public: isPublic,
+        media_url,
       })
       .into("posts")
       .returning("*");
@@ -85,7 +114,7 @@ exports.create = async (req, res) => {
   } catch (err) {
     logger.log({
       level: "error",
-      message: err,
+      message: `Error creating post: ${err.message}, Stack: ${err.stack}`,
     });
 
     res.status(500).send({

@@ -41,13 +41,12 @@
     -webkit-font-smoothing: antialiased;
     font-size: 16px;
     color: var(--color-text-black);
-   width: 100%;
-
+    width: 100%;
   }
 
   #app {
     position: relative;
-     min-width: 100%;
+    min-width: 100%;
   }
 
   a {
