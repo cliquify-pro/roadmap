@@ -1,10 +1,11 @@
 <template>
   <div class="filter">
       <div>
-        <div class="roadmap-title"><h2>Feature ideas</h2></div>
+        <div class="home-title">Feature ideas</div>
         <div><input type="text"/></div>
       </div>
       <div class="filter-box">
+        
       </div>
     </div>
   <div class="homepage-container flex flex-col-reverse lg:flex-row mb-16 lg:space-x-8">
@@ -17,7 +18,7 @@
 
       <infinite-scroll @infinite="getBoardPosts" :state="state" />
     </main>
-    <aside class="flex-1 mb-6 lg:mb-0">
+    <aside v-if="!userStore.getUserId && !showSiteSetupCard" class="flex-1 mb-6 lg:mb-0">
       <site-setup-card v-if="showSiteSetupCard" />
       <login-card v-if="!userStore.getUserId && !showSiteSetupCard" />
     </aside>
@@ -107,4 +108,15 @@ useHead({
   margin: 0 auto
   padding: 0 1rem // Optional: Add some padding for content
   box-sizing: border-box
+
+</style>
+<style lang="css">
+.home-title{
+font-weight: 500;
+font-style: Medium;
+font-size: 32px;
+line-height: 110.00000000000001%;
+vertical-align: middle;
+padding: 16px;
+}
 </style>

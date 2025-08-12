@@ -27,12 +27,13 @@ const settingsStore = useSettingStore();
   min-height: 100vh;
   overflow: hidden;
   background: linear-gradient(0deg, #5443B1 0%, #5F4176 100%);
+  padding: 16px 32px 0 0;
 }
 
 .main-content {
-  margin-left: 70px; // same as sidebar width
+  margin-left: 70px;
   flex: 1;
-  padding: 1rem;
+  
 }
 
 .right-panel {

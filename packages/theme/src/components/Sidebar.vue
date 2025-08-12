@@ -232,7 +232,7 @@ const version = computed(() => {
     border-radius: 8px;
     padding: 0.5rem 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 10;
+    z-index: 110000000;
     min-width: 180px;
     overflow: hidden;
     font-size: 14px;
