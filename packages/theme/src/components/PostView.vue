@@ -84,7 +84,6 @@ import { useHead } from "@vueuse/head";
 import axios from "axios";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import { MoreHorizontal as MoreIcon, Edit2 as EditIcon } from "lucide-vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../store/user"; // Adjust path to your store
 import { useSettingStore } from "../store/settings"; // Adjust path to your store
@@ -93,12 +92,8 @@ import { getPostBySlug, addComment, postActivity } from "../modules/posts";
 // Components
 import Loader from "./ui/Loader.vue";
 import Vote, { VoteEventType } from "./vote/Vote.vue"; // Adjust path
-import DropdownWrapper from "../components/ui/dropdown/DropdownWrapper.vue"; // Adjust path
-import Dropdown from "./ui/dropdown/Dropdown.vue"; // Adjust path
-import DropdownItem from "./ui/dropdown/DropdownItem.vue"; // Adjust path
 import Avatar from "./ui/Avatar/Avatar.vue"; // Adjust path
 import AddComment from "./activity/AddComment.vue"; // Adjust path
-import ActivityItem from "./activity/ActivityItem.vue";
 
 dayjs.extend(relativeTime);
 

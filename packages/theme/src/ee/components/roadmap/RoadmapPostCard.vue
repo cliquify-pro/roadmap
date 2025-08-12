@@ -1,7 +1,6 @@
 <template>
   <div class="post-card">
     <div class="post-card-main">
-      {{ console.log("postData", postData) }}
       <Vote :post-id="postData.postId" :votes-count="postData.voters.votesCount" :is-voted="isVoted"
         @update-voters="updateVoters" />
       <div style="width: 100%">
