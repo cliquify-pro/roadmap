@@ -112,7 +112,6 @@ const { labs, get: siteSettings } = useSettingStore();
 
 function getMediaUrl(path) {
   const fullUrl = `${VITE_API_URL}${path}`;
-  console.log("Generated Media URL:", fullUrl); // Debug log
   return fullUrl;
 }
 

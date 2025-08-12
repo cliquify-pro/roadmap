@@ -137,6 +137,7 @@ const version = computed(() => {
     display: flex;
     flex-direction: column;
     z-index: 1000;
+    overflow: visible;
    
 }
 
@@ -229,9 +230,55 @@ const version = computed(() => {
     background: #fff;
     color: #333;
     border-radius: 8px;
-    padding: 0.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     z-index: 10;
-    min-width: 160px;
+    min-width: 180px;
+    overflow: hidden;
+    font-size: 14px;
+    animation: fadeIn 0.2s ease-in-out;
 }
+
+/* Dropdown item styling */
+.nav-profile-dropdown a,
+.nav-profile-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 0.6rem 1rem;
+    text-align: left;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    color: #333;
+    font-weight: 500;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+/* Hover effect */
+.nav-profile-dropdown a:hover,
+.nav-profile-dropdown button:hover {
+    background: #f5f5f5;
+    color: #000;
+}
+
+/* Divider */
+.nav-profile-dropdown hr {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 0.3rem 0;
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 </style>

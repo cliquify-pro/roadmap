@@ -6,7 +6,7 @@ const error = require("../errorResponse.json");
 
 module.exports = async (req, res, next) => {
   const id = validUUID(req.params.postId) || validUUID(req.body.id);
-  const slug = req.body.slug;
+  const slug = req.body.slug || req.params.slug;
 
   const post = await database
     .select()
