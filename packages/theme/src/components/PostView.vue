@@ -49,15 +49,16 @@ Edit
         </div>
         <!-- Image Section -->
         <div v-if="post.media_url" class="viewpost__media">
-          <img :src="getMediaUrl(post.media_url)" alt="Post Media" class="viewpost__media-image" style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 8px; margin-top: 0.5rem; object-fit: cover;" />
+          <img :src="getMediaUrl(post.media_url)" alt="Post Media" class="viewpost__media-image"
+            style="max-width: 200px; max-height: 200px; border: 1px solid #ddd; border-radius: 8px; margin-top: 0.5rem; object-fit: cover;" />
         </div>
-        <p v-html=" postContent" class="viewpost__description" />
-        </div>
+        <p v-html="postContent" class="viewpost__description" />
       </div>
+    </div>
 
-      <div v-if="showPostActivity" class="activity-section">
-        <add-comment :post-id="post.postId" />
-        <!-- <header class="activity-header">
+    <div v-if="showPostActivity" class="activity-section">
+      <add-comment :post-id="post.postId" />
+      <!-- <header class="activity-header">
         <h6>Activity</h6>
       </header>
       <div v-if="!activity.loading" class="activity-list">
@@ -70,11 +71,11 @@ Edit
       <div v-else class="loader-container">
         <loader />
       </div> -->
-      </div>
     </div>
-    <div v-else>
-      <p class="viewpost__no-post">There is no such post.</p>
-    </div>
+  </div>
+  <div v-else>
+    <p class="viewpost__no-post">There is no such post.</p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -150,9 +151,7 @@ async function fetchPost() {
   loading.value = true;
 
   try {
-    const response = await axios.post(`/api/v1/posts/slug`, {
-      slug: props.slug,
-    });
+    const response = await getPostBySlug(props.slug);
     post.value = response.data.post;
     if (post.value?.contentMarkdown) {
       postContent.value = post.value.contentMarkdown.replace(/\n/g, "<br>");
@@ -173,12 +172,7 @@ async function getPostActivity(sort: "ASC" | "DESC" = "DESC") {
   activity.value.loading = true;
 
   try {
-    const response = await axios.get(
-      `/api/v1/posts/${post.value.postId}/activity`,
-      {
-        params: { sort },
-      },
-    );
+    const response = await postActivity({ post_id: post.value.postId, sort });
     activity.value.data = response.data.activity;
   } catch (err) {
     console.error("Failed to fetch activity", err);
