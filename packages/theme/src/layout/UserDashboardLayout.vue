@@ -27,7 +27,7 @@ const settingsStore = useSettingStore();
   min-height: 100vh;
   overflow: hidden;
   background: linear-gradient(0deg, #5443B1 0%, #5F4176 100%);
-  padding: 16px 32px 0 0;
+  padding: 16px 16px 0 0;
 }
 
 .main-content {
@@ -38,8 +38,8 @@ const settingsStore = useSettingStore();
 
 .right-panel {
   background: #fff;
- padding: 16px 0 0; 
-//   padding: 16px 16px 0px 0px;
+//  padding: 16px 0 0; 
+  padding: 16px;
   position: relative;
   z-index: 0;
   border-radius: 8px;
