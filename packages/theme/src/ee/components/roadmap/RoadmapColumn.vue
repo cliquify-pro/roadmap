@@ -16,7 +16,7 @@
     </div>
 
     <!-- Create new button with permission check -->
-    <button v-if="!createPostPermissionDisabled" class="create-new-btn" @click="openOffcanvas">
+    <button v-if="!createPostPermissionDisabled && user.isOwner" class="create-new-btn" @click="openOffcanvas">
       + Create new
     </button>
 
@@ -40,8 +40,7 @@ import { useUserStore } from "../../../store/user";
 const drawerVisible = ref(false);
 const selectedSlug = ref("");
 const isOffcanvasOpen = ref(false);
-const { getUserId, permissions } = useUserStore(); // Destructure permissions
-
+const { getUserId, permissions, user } = useUserStore(); // Destructure permissions
 // Computed property to check create post permission
 const createPostPermissionDisabled = computed(() => {
   return !permissions.includes("post:create");

@@ -1,16 +1,15 @@
 <template>
   <div>
     <div class="filter">
-      <div>
-        <div class="roadmap-title">Roadmap</div>
-        <div><input type="text"/></div>
-      </div>
-      <div class="filter-box">
+      <div class="roadmap-title">
+        <h2>Roadmap</h2>
+        <p>View : </p>
         <l-select
           v-model="selectedView"
-          label="Select View"
+          label=""
           :options="viewOptions"
           placeholder="Choose an option"
+          class="view-select"
           @change="handleViewChange"
         />
         <input
@@ -18,11 +17,14 @@
           v-model.number="selectedYear"
           type="number"
           @change="getRoadmaps"
-          min="2025"
+          min="2023"
           max="2030"
           class="year-input"
           placeholder="Select Year"
         />
+      </div>
+      <div>
+        <input/>
       </div>
     </div>
 
@@ -53,7 +55,6 @@ import { useHead } from "@vueuse/head";
 import { getAllRoadmaps } from "../modules/roadmaps";
 import { updatePost } from "../modules/posts";
 import { useSettingStore } from "../store/settings";
-
 // components
 import InfiniteScroll, { InfiniteScrollStateType } from "../components/ui/InfiniteScroll.vue";
 import RoadmapColumn from "../ee/components/roadmap/RoadmapColumn.vue";
@@ -142,33 +143,94 @@ watch([selectedView, selectedYear], () => {
   overflow-x: scroll
 </style>
 
-<style scoped>
+<style scoped lang="scss">
 .filter {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start; // Inline alignment
   margin-bottom: 1rem;
   padding: 16px;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.filter-box {
+.roadmap-title {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1rem; // Space between heading, dropdown, and input
+  height: 40px; // Fixed height to align all elements
+}
+
+.roadmap-title h2 {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 40px; // Match container height for vertical centering
+  color: #333;
+}
+
+.view-select {
+  width: 150px;
+  height: 40px; // Match container height
+  font-size: 0.875rem;
+  // border: 1px solid #ccc;
+  // border-radius: 4px;
+  padding: 0 0.5rem; // Adjusted padding for vertical centering
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
 }
 
 .year-input {
-  padding: 0.5rem;
-  font-size: 1rem;
-  border-radius: 4px;
-  border: 1px solid #ccc;
   width: 100px;
+  height: 40px; // Match container height
+  padding: 0 0.5rem; // Adjusted padding for vertical centering
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  line-height: 40px; // Match container height
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    border-color: #5443B1;
+  }
+
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none; // Remove number input arrows
+    margin: 0;
+  }
+
+  &[type="number"] {
+    -moz-appearance: textfield; // Remove number input arrows in Firefox
+  }
 }
-.roadmap-title{
-font-weight: 500;
-font-style: Medium;
-font-size: 32px;
-line-height: 110.00000000000001%;
-vertical-align: middle;
+
+@media (max-width: 768px) {
+  .filter {
+    padding: 12px; // Slightly less padding on mobile
+  }
+
+  .roadmap-title {
+    flex-wrap: wrap; // Allow wrapping on smaller screens
+    gap: 0.5rem;
+    height: auto; // Allow dynamic height on mobile
+  }
+
+  .view-select,
+  .year-input {
+    width: 100%;
+    max-width: 150px;
+    height: 36px; // Slightly smaller on mobile
+    line-height: 36px; // Match height
+  }
+
+  .roadmap-title h2 {
+    font-size: 24px; // Smaller heading on mobile
+    line-height: 36px; // Match input heights
+  }
 }
 </style>

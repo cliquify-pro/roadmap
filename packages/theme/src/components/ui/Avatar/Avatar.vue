@@ -1,32 +1,19 @@
 <template>
   <div class="select-none overflow-hidden" @click="$emit('click')">
-    <div
-      v-if="src"
-      data-test="avatar-image"
-    >
+    <div data-test="avatar-image">
       <img
-        :src="src"
+        :src="currentSrc"
         :alt="name"
         class="max-w-8 max-h-8 size-8 rounded-full pointer-events-none"
+        @error="onImageError"
       >
-    </div>
-    <div
-      v-else
-      data-test="avatar-initials"
-      :class="[
-        'max-w-8 max-h-8 size-8 rounded-full',
-        'text-(--color-white) font-medium uppercase',
-        'border border-(--color-white)',
-        'flex items-center justify-center',
-      ]"
-    >
-      {{ initals }}
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { ref, watch } from "vue";
+import user from "../../icons/user.svg";
 
 const props = defineProps({
   src: {
@@ -39,7 +26,16 @@ const props = defineProps({
   },
 });
 
-const initals = computed(() => {
-  return props.name.slice(0, 1);
-});
+const currentSrc = ref(user);
+
+watch(
+  () => props.src,
+  (newVal) => {
+    currentSrc.value = newVal || user;
+  },
+);
+
+function onImageError() {
+  currentSrc.value = user;
+}
 </script>

@@ -6,6 +6,7 @@ const error = require("../../errorResponse.json");
 exports.updatePost = async (req, res) => {
   const userId = req.user.userId;
   const permissions = req.user.permissions;
+  const isOwner = req.user.isOwner; // Added to check owner status
   const postId = validUUID(req.params.postId);
 
   // Permissions check
@@ -38,30 +39,31 @@ exports.updatePost = async (req, res) => {
     media_url,
   } = req.body;
   const isPublic = req.body.public || "Yes";
+
   // Validate required fields
-  if (!(title && boardId && date)) {
-    return res.status(400).send({
-      errors: [
-        title
-          ? ""
-          : {
-              message: error.api.posts.titleMissing,
-              code: "POST_TITLE_MISSING",
-            },
-        boardId
-          ? ""
-          : {
-              message: error.api.boards.boardIdMissing,
-              code: "BOARD_ID_MISSING",
-            },
-        date
-          ? ""
-          : {
-              message: "Date is required",
-              code: "DATE_MISSING",
-            },
-      ].filter((e) => e),
+  const errors = [];
+  if (!title) {
+    errors.push({
+      message: error.api.posts.titleMissing,
+      code: "POST_TITLE_MISSING",
     });
+  }
+  if (isOwner && !boardId) {
+    // Only require boardId for owners
+    errors.push({
+      message: error.api.boards.boardIdMissing,
+      code: "BOARD_ID_MISSING",
+    });
+  }
+  if (!date) {
+    errors.push({
+      message: "Date is required",
+      code: "DATE_MISSING",
+    });
+  }
+
+  if (errors.length > 0) {
+    return res.status(400).send({ errors });
   }
 
   // Generate slug again (same as create)
@@ -76,7 +78,7 @@ exports.updatePost = async (req, res) => {
     title,
     slug,
     contentMarkdown,
-    boardId: validUUID(boardId),
+    boardId: boardId ? validUUID(boardId) : null, // Allow null for non-owners
     roadmap_id: roadmapId ? validUUID(roadmapId) : null,
     date,
     release_date,

@@ -25,10 +25,10 @@
               {{ dayjs(postData.createdAt).fromNow() }}
             </time> -->
           </div>
-          <div data-test="post-card-toggle" :style="{ transform: isExpanded ? 'rotateX(180deg)' : '' }"
+          <!-- <div data-test="post-card-toggle" :style="{ transform: isExpanded ? 'rotateX(180deg)' : '' }"
             class="post-card-toggle" @click="isExpanded = !isExpanded">
             <arrow-top-icon />
-          </div>
+          </div> -->
         </div>
         <p v-if="isExpanded" data-test="post-card-description" class="post-card-description">
           {{ useTrim(postData.contentMarkdown, 120) }}
@@ -49,7 +49,7 @@
         <div>
           <time v-if="postData.release_date" data-test="post-release-date" :datetime="postData.release_date"
             :title="dayjs(postData.release_date).format('dddd, DD MMMM YYYY hh:mm')" class="post-release-Date">
-            {{ dayjs(postData.release_date).format('DD MMM YYYY') }}
+            Release: {{ dayjs(postData.release_date).format('DD MMM YYYY') }}
           </time>
         </div>
       </div>
@@ -80,7 +80,7 @@ const props = defineProps({
   },
 });
 
-const isExpanded = ref(false);
+const isExpanded = ref(true);
 const isVoted = computed<boolean>(() =>
   Boolean(props.post.voters?.viewerVote?.voteId),
 );

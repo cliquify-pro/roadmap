@@ -1,6 +1,5 @@
 import { computed, reactive, ref } from "vue";
 import { defineStore } from "pinia";
-
 import { router } from "../router";
 import type { PermissionType } from "../modules/users";
 
@@ -12,20 +11,32 @@ export const useUserStore = defineStore("user", () => {
     username: "",
     email: "",
     avatar: "",
+    isOwner: false, // Default false
   });
   const permissions = ref<string[]>([]);
 
   const getUser = computed(() => user);
   const getUserId = computed(() => user.userId);
 
-  // TODO: Add TS types
-  function setUser(payload: unknown) {
-    authToken.value = payload.authToken;
-    user.userId = payload.userId;
-    user.name = payload.name;
-    user.username = payload.username;
-    user.email = payload.email;
-    user.avatar = payload.avatar;
+  // Payload ke liye type
+  interface UserPayload {
+    authToken?: string;
+    userId?: string;
+    name?: string;
+    username?: string;
+    email?: string;
+    avatar?: string;
+    isOwner?: boolean;
+  }
+
+  function setUser(payload: UserPayload) {
+    authToken.value = payload.authToken || "";
+    user.userId = payload.userId || "";
+    user.name = payload.name || "";
+    user.username = payload.username || "";
+    user.email = payload.email || "";
+    user.avatar = payload.avatar || "";
+    user.isOwner = payload.isOwner ?? false; // Default false if undefined
 
     localStorage.setItem(
       "user",
@@ -40,12 +51,20 @@ export const useUserStore = defineStore("user", () => {
     permissions.value = payload;
   }
 
-  function login(payload: unknown) {
+  function login(payload: UserPayload) {
     setUser(payload);
   }
 
   function logout() {
-    setUser({});
+    setUser({
+      authToken: "",
+      userId: "",
+      name: "",
+      username: "",
+      email: "",
+      avatar: "",
+      isOwner: false, // Reset to false
+    });
 
     setPermissions([]);
 

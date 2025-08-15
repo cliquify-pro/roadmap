@@ -1,7 +1,5 @@
-// service
+const database = require("../../database"); // Database import
 const { createToken } = require("../../services/token.service");
-
-// utils
 const { validatePassword } = require("../../utils/password");
 const logger = require("../../utils/logger");
 const error = require("../../errorResponse.json");
@@ -36,7 +34,14 @@ exports.login = async (req, res) => {
       });
     }
 
-    // generate authToken
+    // User table se isOwner fetch karo
+    const userWithPermissions = await database
+      .select("isOwner")
+      .from("users")
+      .where({ userId: user.userId })
+      .first();
+
+    // Generate authToken
     const tokenPayload = {
       userId: user.userId,
       email: user.email,
@@ -53,6 +58,7 @@ exports.login = async (req, res) => {
         username: user.username,
         email: user.email,
         avatar: user.avatar,
+        isOwner: userWithPermissions.isOwner ?? false, // Database se isOwner
       },
     });
   } catch (err) {

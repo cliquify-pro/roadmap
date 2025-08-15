@@ -2,7 +2,7 @@
   <div class="filter">
     <div>
       <div class="home-title">Feature ideas</div>
-      <div><input type="text"/></div>
+
     </div>
     <div class="filter-box"></div>
   </div>
@@ -17,7 +17,7 @@
 
       <infinite-scroll @infinite="getBoardPosts" :state="state" />
     </main>
-    <aside  class="flex-1 mb-6 lg:mb-0">
+    <aside class="flex-1 mb-6 lg:mb-0">
       <site-setup-card v-if="showSiteSetupCard" />
       <login-card v-if="!userStore.getUserId && !showSiteSetupCard" />
     </aside>

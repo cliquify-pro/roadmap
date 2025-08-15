@@ -78,7 +78,7 @@
       <dropdown-wrapper>
         <template #default="dropdown">
           <dropdown v-if="dropdown.active" class="dashboard-sidebar-dropdown">
-            <dropdown-item @click="aboutLogChimp">
+            <!-- <dropdown-item @click="aboutLogChimp">
               <template #icon>
                 <info-icon />
               </template>
@@ -89,8 +89,8 @@
                 <twitter-icon />
               </template>
               Tweet @LogChimp!
-            </dropdown-item>
-            <dropdown-spacer />
+            </dropdown-item> -->
+            <!-- <dropdown-spacer /> -->
             <dropdown-item @click="logout">
               <template #icon>
                 <logout-icon />
@@ -215,5 +215,5 @@ $white: var(--color-white)
 		font-weight: 600
 
 .dashboard-sidebar-dropdown
-	top: -9rem
+	top: -3rem
 </style>

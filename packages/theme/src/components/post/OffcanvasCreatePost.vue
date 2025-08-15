@@ -57,7 +57,7 @@ function handleOverlayClick(event: MouseEvent) {
 
 async function fetchRoadmaps() {
   try {
-    const response = await getAllRoadmaps(); // Adjust based on your API response structure
+    const response = await getAllRoadmaps();
     roadmaps.value = response.data.result.map((roadmap: any) => ({
       id: roadmap.id,
       name: roadmap.name,

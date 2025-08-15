@@ -13,7 +13,7 @@
 
         <div class="viewpost__meta">
           <div class="viewpost__meta-author">
-            <avatar class="viewpost__author-avatar" :src="post.author.avatar" :name="post.author.name" />
+            <!-- <avatar class="viewpost__author-avatar" :src="post.author.avatar" :name="post.author.name" /> -->
             {{ post.author.name }}
           </div>
           <div class="viewpost__meta-divider">|</div>
