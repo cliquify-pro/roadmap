@@ -160,7 +160,7 @@ function openDrawer(slug: string) {
 
 .post-card-description
   color: var(--color-gray-40)
-  font-size: 0.875rem
+  font-size: 12px
   margin-top: 0.5rem
 
 .post-card-extra

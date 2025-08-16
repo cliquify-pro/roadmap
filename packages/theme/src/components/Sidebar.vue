@@ -16,7 +16,7 @@
     <nav class="nav-items">
       <router-link to="/" class="nav-link" exact>
         <div class="item-icon-wrapper">
-          <HomeIcon />
+         <img src="./icons//image.png"/>
         </div>
       </router-link>
 
@@ -311,6 +311,8 @@ function handlePostCreated(newPost) {
   overflow: hidden;
   font-size: 14px;
   animation: fadeIn 0.2s ease-in-out;
+  margin-left: 60px;
+  inset: auto auto 0px 0px;
 }
 
 /* Dropdown item styling */
