@@ -42,16 +42,7 @@
             </template>
           </dropdown-wrapper>
           <div v-else class="nav-item nav-auth">
-            <Button type="primary" href="/login" size="small"> Login </Button>
-            <Button
-              v-if="settingsStore.get.allowSignup"
-              type="primary"
-              :outline="true"
-              href="/join"
-              size="small"
-            >
-              Create an account
-            </Button>
+            <Button type="primary" size="small" @click="loginWithCliquify"> Login </Button>
           </div>
         </nav>
       </div>
@@ -88,6 +79,13 @@ import Sidebar from "./Sidebar.vue";
 
 const settingsStore = useSettingStore();
 const userStore = useUserStore();
+
+const VITE_CLIQUIFY_LOGIN_URL =
+  import.meta.env.VITE_CLIQUIFY_LOGIN_URL || "http://localhost:3001";
+
+function loginWithCliquify() {
+  window.location.href = `${VITE_CLIQUIFY_LOGIN_URL}/login?redirect=${window.location.origin}`;
+}
 
 const accessDashboard = computed(() => {
   const checkPermission = userStore.permissions.includes("dashboard:read");

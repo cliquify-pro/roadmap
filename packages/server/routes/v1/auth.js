@@ -4,14 +4,26 @@ const router = express.Router();
 
 // controller
 const auth = require("../../controllers/auth");
+const me = require("../../controllers/auth/me");
+const logout = require("../../controllers/auth/logout");
 
 // middleware
 const exists = require("../../middlewares/userExists");
 const mailConfigExists = require("../../middlewares/mailConfigExists");
 const validateEmailToken = require("../../middlewares/validateEmailToken");
+const authenticate = require("../../middlewares/authenticate");
+const adminOnly = require("../../middlewares/adminOnly");
 
-router.post("/auth/signup", mailConfigExists, auth.signup);
-router.post("/auth/login", exists, auth.login);
+// Cliquify SSO — returns current user from cookie
+router.get("/auth/me", authenticate, me);
+
+// Logout — clears all auth cookies
+router.post("/auth/logout", logout);
+
+// Admin-only direct login (isOwner = true required)
+router.post("/auth/login", adminOnly, exists, auth.login);
+
+// router.post("/auth/signup", mailConfigExists, auth.signup);
 
 router.post("/auth/setup", mailConfigExists, auth.setup);
 router.get("/auth/setup", auth.isSiteSetup);

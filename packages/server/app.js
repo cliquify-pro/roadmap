@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const routes = require("./routes");
 
@@ -22,8 +23,16 @@ process.env.NODE_ENV = process.env.NODE_ENV || "development";
 // contains key-value pairs of data submitted in the request body
 app.use(express.json());
 
-// enable all CORS requests
-app.use(cors());
+// parse cookies (required for Cliquify SSO)
+app.use(cookieParser());
+
+// CORS — allow frontend origin with credentials
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    credentials: true,
+  }),
+);
 
 // import all routes
 app.use(routes);
