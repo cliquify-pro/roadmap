@@ -6,7 +6,7 @@
 			"
       class="text-sm text-(--color-gray-70)"
 		>
-			Powered by LogChimp
+			Powered by Cliquify
 		</a>
 	</div>
 </template>

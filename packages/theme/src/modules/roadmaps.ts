@@ -14,22 +14,27 @@ export interface Roadmap {
 }
 
 /**
- *	Get all roadmaps
+ * Get all roadmaps
  *
+ * @param {string} view - The view type ('roadmap' or 'quarterly')
+ * @param {number} year - The year for quarterly view (optional)
  * @returns {object} response
  */
-export const getAllRoadmaps = async () => {
+export const getAllRoadmaps = async (view = "roadmap", year = null) => {
+  const params = { view };
+  if (year) params.year = year;
+
   return await axios({
     method: "GET",
     url: `${VITE_API_URL}/api/v1/roadmaps`,
+    params,
   });
 };
 
 /**
- *	Get board by URL
+ * Get board by URL
  *
- * @param {string} url board url
- *
+ * @param {string} url - Board URL
  * @returns {object} response
  */
 export const getRoadmapByUrl = async (url: string) => {
@@ -42,8 +47,7 @@ export const getRoadmapByUrl = async (url: string) => {
 /**
  * Search roadmap by name
  *
- * @param {string} name roadmap name
- *
+ * @param {string} name - Roadmap name
  * @returns {object} response
  */
 export const searchRoadmap = async (name: string) => {

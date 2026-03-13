@@ -14,7 +14,7 @@
       <li>
         <router-link to="/dashboard/boards" class="sidebar-list-item">
           <board-icon />
-          <p>Boards</p>
+          <p>Tags</p>
         </router-link>
       </li>
       <li>
@@ -78,7 +78,7 @@
       <dropdown-wrapper>
         <template #default="dropdown">
           <dropdown v-if="dropdown.active" class="dashboard-sidebar-dropdown">
-            <dropdown-item @click="aboutLogChimp">
+            <!-- <dropdown-item @click="aboutLogChimp">
               <template #icon>
                 <info-icon />
               </template>
@@ -89,8 +89,8 @@
                 <twitter-icon />
               </template>
               Tweet @LogChimp!
-            </dropdown-item>
-            <dropdown-spacer />
+            </dropdown-item> -->
+            <!-- <dropdown-spacer /> -->
             <dropdown-item @click="logout">
               <template #icon>
                 <logout-icon />
@@ -166,7 +166,8 @@ $white: var(--color-white)
 	position: sticky
 	top: 0
 	bottom: 0
-	background-color: var(--color-brand-color)
+	background: radial-gradient(118.28% 183.68% at 67.22% 97.4%, #5443B1 0%, #5F4176 100%)
+
 	height: 100vh
 	padding: 1rem
 	min-width: 200px
@@ -214,5 +215,5 @@ $white: var(--color-white)
 		font-weight: 600
 
 .dashboard-sidebar-dropdown
-	top: -9rem
+	top: -3rem
 </style>

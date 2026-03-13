@@ -1,6 +1,8 @@
 <template>
-  <header class="header bg-(--color-brand-color)">
-    <div class="w-full max-w-6xl mx-auto">
+  <header class="header" :style="{
+      background: 'radial-gradient(118.28% 183.68% at 67.22% 97.4%, #5443B1 0%, #5F4176 100%)'
+    }">
+    <div class="w-full  mx-auto">
       <div class="flex items-center justify-between py-4 px-6">
         <site-branding :title="settingsStore.get.title" :logo="settingsStore.get.logo" text-color="white" />
         <nav>
@@ -40,21 +42,13 @@
             </template>
           </dropdown-wrapper>
           <div v-else class="nav-item nav-auth">
-            <Button type="primary" href="/login" size="small"> Login </Button>
-            <Button
-              v-if="settingsStore.get.allowSignup"
-              type="primary"
-              :outline="true"
-              href="/join"
-              size="small"
-            >
-              Create an account
-            </Button>
+            <Button type="primary" size="small" @click="loginWithCliquify"> Login </Button>
           </div>
         </nav>
       </div>
 
       <navbar class="mt-2" />
+       <!-- <Sidebar/> -->
     </div>
   </header>
 </template>
@@ -81,9 +75,17 @@ import DropdownItem from "./ui/dropdown/DropdownItem.vue";
 import DropdownSpacer from "./ui/dropdown/DropdownSpacer.vue";
 import Button from "./ui/Button.vue";
 import { Avatar } from "./ui/Avatar";
+import Sidebar from "./Sidebar.vue";
 
 const settingsStore = useSettingStore();
 const userStore = useUserStore();
+
+const VITE_CLIQUIFY_LOGIN_URL =
+  import.meta.env.VITE_CLIQUIFY_LOGIN_URL || "http://localhost:3001";
+
+function loginWithCliquify() {
+  window.location.href = `${VITE_CLIQUIFY_LOGIN_URL}/login?redirect=${window.location.origin}`;
+}
 
 const accessDashboard = computed(() => {
   const checkPermission = userStore.permissions.includes("dashboard:read");
@@ -106,7 +108,9 @@ const showVersion = computed(() => {
 });
 
 const version = computed(() => {
-  return process.env.version;
+  // return process.env.version;
+  // return import.meta.env.VITE_APP_VERSION;
+  return null;
 });
 </script>
 

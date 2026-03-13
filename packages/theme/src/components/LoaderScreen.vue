@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.root">
-    <img :class="$style.logo" src="/logchimp.svg" alt="LogChimp" />
+    <img :class="$style.logo" src="/logchimp.svg" alt="Cliquify" />
     <div :class="$style.pulse" />
   </div>
 </template>

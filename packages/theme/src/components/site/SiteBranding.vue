@@ -2,7 +2,7 @@
 	<router-link :to="link" :class="$style.branding">
 		<div :class="$style.placeholder">
 			<img :class="$style.image"
-				:src="logo"
+				src="../icons//CliquifyLogo.svg"
 				:alt="title"
 			>
 		</div>

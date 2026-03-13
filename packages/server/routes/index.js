@@ -18,7 +18,7 @@ const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
 });
-router.use("/content/images", limiter, serveImages);
+// router.use("/content/images", limiter, serveImages);
 
 router.get("/api", (_, res) => {
   res.send("👍");

@@ -81,8 +81,6 @@ const disabled = computed(() => {
 
 async function changeVote() {
 	if (loading.value || disabled.value) return;
-
-
 	loading.value = true;
 
 	if (props.isVoted) {

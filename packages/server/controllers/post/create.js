@@ -1,53 +1,56 @@
 // modules
 const { nanoid } = require("nanoid");
 const { v4: uuidv4 } = require("uuid");
-
 const database = require("../../database");
-
-// utils
 const { validUUID } = require("../../helpers");
 const logger = require("../../utils/logger");
-
+const multer = require("multer");
+const path = require("path");
 const error = require("../../errorResponse.json");
+
+// Configure multer for file upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 exports.create = async (req, res) => {
   const userId = req.user.userId;
   const permissions = req.user.permissions;
 
   const title = req.body.title;
-  const contentMarkdown = req.body.contentMarkdown;
-  const boardId = validUUID(req.body.boardId);
+  const contentMarkdown = req.body.contentMarkdown || null;
+  const boardId = req.body.boardId ? validUUID(req.body.boardId) : null;
+  const roadmapId = req.body.roadmapId ? validUUID(req.body.roadmapId) : null;
+  const date = req.body.date || null;
+  const release_date = req.body.release_date || null;
+  const isPublic = req.body.public || "Yes";
+  const media_url = req.body.media_url || null;
 
-  const checkPermission = permissions.includes("post:create");
-  if (!checkPermission) {
+  // Permission check
+  if (!permissions.includes("post:create")) {
     return res.status(403).send({
       message: error.api.roles.notEnoughPermission,
       code: "NOT_ENOUGH_PERMISSION",
     });
   }
 
-  if (!(title && boardId)) {
+  // Minimum requirement: Title must be present
+  if (!title) {
     return res.status(400).send({
-      errors: [
-        title
-          ? ""
-          : {
-              message: error.api.posts.titleMissing,
-              code: "POST_TITLE_MISSING",
-            },
-        boardId
-          ? ""
-          : {
-              message: error.api.boards.boardIdMissing,
-              code: "BOARD_ID_MISSING",
-            },
-      ],
+      message: error.api.posts.titleMissing,
+      code: "POST_TITLE_MISSING",
     });
   }
 
-  // generate slug unique identification
+  // generate slug
   const slugId = nanoid(20);
-
   const slug = `${title
     .replace(/[^\w\s]/gi, "")
     .replace(/\s\s+/gi, " ")
@@ -64,13 +67,19 @@ exports.create = async (req, res) => {
         slugId,
         contentMarkdown,
         userId,
-        boardId,
+        boardId, // optional
+        roadmap_id: roadmapId, // optional
+        date, // optional
+        release_date, // optional
+        public: isPublic,
+        media_url, // optional
       })
       .into("posts")
       .returning("*");
 
     const post = createPost[0];
 
+    // auto add vote for creator
     await database
       .insert({
         voteId: uuidv4(),
@@ -79,13 +88,11 @@ exports.create = async (req, res) => {
       })
       .into("votes");
 
-    res.status(201).send({
-      post,
-    });
+    res.status(201).send({ post });
   } catch (err) {
     logger.log({
       level: "error",
-      message: err,
+      message: `Error creating post: ${err.message}, Stack: ${err.stack}`,
     });
 
     res.status(500).send({

@@ -15,23 +15,36 @@ export interface PostType {
   contentMarkdown?: string;
   createdAt: string;
   updatedAt: string;
+  date: string;
+  release_date: string | null;
+  public: "Yes" | "No";
+  media_url?: string;
 }
 
 interface GetPostArgs extends ApiPaginationType {
   boardId?: string[];
   roadmapId?: string;
+  date?: string;
+  release_date?: string;
+  public?: "Yes" | "No";
+  media_url?: string;
 }
 
 interface CreatePostArgs {
   title: string;
   contentMarkdown?: string;
+  roadmapId?: string;
+  date: string;
+  release_date?: string;
+  public: "Yes" | "No";
+  media_url?: string;
 }
 
 export interface UpdatePostArgs extends CreatePostArgs {
   id: string;
   slugId: string;
   userId: string;
-  boardId?: string;
+  boardId?: string | null; // Allow null for non-owners
   roadmapId?: string;
 }
 
@@ -46,17 +59,23 @@ interface AddCommentArgs {
   is_internal?: boolean;
 }
 
+// Default board ID for fallback (replace with actual ID from your backend)
+const DEFAULT_BOARD_ID = "general-board-id"; // TODO: Replace with actual default board ID
+
 /**
  * Create post
  *
- * @param {boardId} string board UUID
+ * @param {boardId} string | null board UUID (optional)
  * @param {post} object post title and description
  *
  * @returns {object} response
  */
-export const createPost = async (boardId: string, post: CreatePostArgs) => {
+export const createPost = async (
+  boardId: string | null,
+  post: CreatePostArgs,
+) => {
   const { getUserId, authToken } = useUserStore();
-
+  const finalBoardId = boardId || null;
   return await axios({
     method: "POST",
     url: `${VITE_API_URL}/api/v1/posts`,
@@ -64,7 +83,12 @@ export const createPost = async (boardId: string, post: CreatePostArgs) => {
       title: post.title,
       contentMarkdown: post.contentMarkdown,
       userId: getUserId,
-      boardId,
+      boardId: finalBoardId,
+      roadmapId: post.roadmapId,
+      date: post.date,
+      release_date: post.release_date,
+      public: post.public || "Yes",
+      media_url: post.media_url,
     },
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -81,6 +105,9 @@ export const createPost = async (boardId: string, post: CreatePostArgs) => {
  * @param {string} userId logged in user UUID
  * @param {string[]} boardId array of board UUIDs
  * @param {string} roadmapId array of roadmap UUIDs
+ * @param {string} date filter by date
+ * @param {string} release_date filter by release date
+ * @param {string} public filter by visibility (Yes/No)
  *
  * @returns {object} response
  */
@@ -90,6 +117,9 @@ export const getPosts = async ({
   sort = "DESC",
   boardId = [],
   roadmapId = "",
+  date = "",
+  release_date = "",
+  public: visibility,
 }: GetPostArgs) => {
   const { getUserId } = useUserStore();
 
@@ -103,6 +133,9 @@ export const getPosts = async ({
       userId: getUserId,
       boardId,
       roadmapId,
+      date,
+      release_date,
+      public: visibility,
     },
   });
 };
@@ -136,19 +169,24 @@ export const getPostBySlug = async (slug: string) => {
  * @param {string} post.contentMarkdown post body in markdown format
  * @param {string} post.slugId post slug UUID
  * @param {string} post.userId post author UUID
- * @param {string} post.boardId post board UUID
+ * @param {string | null} post.boardId post board UUID (optional)
  * @param {string} post.roadmapId post roadmap UUID
+ * @param {string} post.date post date
+ * @param {string} post.release_date post release date
+ * @param {string} post.public post visibility
  *
  * @returns {object} response
  */
 export const updatePost = async (post: UpdatePostArgs) => {
   const { authToken } = useUserStore();
-
+  const finalBoardId = post.boardId || null; // Allow null for non-owners
   return await axios({
     method: "PATCH",
     url: `${VITE_API_URL}/api/v1/posts`,
     data: {
       ...post,
+      boardId: finalBoardId,
+      public: post.public || "Yes",
     },
     headers: {
       Authorization: `Bearer ${authToken}`,

@@ -21,7 +21,7 @@
 				<board-icon />
 			</div>
 			<div class="navbar-item-content">
-				Boards
+				Tags
 			</div>
 		</router-link>
 	</div>
