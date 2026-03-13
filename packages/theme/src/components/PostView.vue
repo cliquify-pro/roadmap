@@ -57,8 +57,8 @@ Edit
     </div>
 
     <div v-if="showPostActivity" class="activity-section">
-      <add-comment :post-id="post.postId" />
-      <!-- <header class="activity-header">
+      <add-comment :post-id="post.postId" @add-comment="() => getPostActivity(activity.sort)" />
+      <header class="activity-header">
         <h6>Activity</h6>
       </header>
       <div v-if="!activity.loading" class="activity-list">
@@ -70,7 +70,7 @@ Edit
       </div>
       <div v-else class="loader-container">
         <loader />
-      </div> -->
+      </div>
     </div>
   </div>
   <div v-else>
@@ -94,7 +94,8 @@ import { getPostBySlug, addComment, postActivity } from "../modules/posts";
 import Loader from "./ui/Loader.vue";
 import Vote, { VoteEventType } from "./vote/Vote.vue"; // Adjust path
 import Avatar from "./ui/Avatar/Avatar.vue"; // Adjust path
-import AddComment from "./activity/AddComment.vue"; // Adjust path
+import AddComment from "./activity/AddComment.vue";
+import ActivityItem from "./activity/ActivityItem.vue";
 
 dayjs.extend(relativeTime);
 

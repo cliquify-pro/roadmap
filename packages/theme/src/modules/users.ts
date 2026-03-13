@@ -77,6 +77,7 @@ export const getPermissions = async (): Promise<
   return await axios({
     method: "GET",
     url: `${VITE_API_URL}/api/v1/users/permissions`,
+    withCredentials: true,
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
@@ -113,6 +114,7 @@ export const checkUserDashboardAccess = async () => {
   return await axios({
     method: "GET",
     url: `${VITE_API_URL}/api/v1/users/dashboard`,
+    withCredentials: true,
     headers: {
       Authorization: `Bearer ${authToken}`,
     },

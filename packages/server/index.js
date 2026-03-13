@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const startTime = Date.now();
 const express = require("express");
 const path = require("path");

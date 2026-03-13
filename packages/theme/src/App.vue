@@ -34,7 +34,6 @@ import { useSettingStore } from "./store/settings";
 import { useUserStore } from "./store/user";
 import { useAlertStore } from "./store/alert";
 import { getPermissions } from "./modules/users";
-import tokenError from "./utils/tokenError";
 
 // components
 import { Alert } from "./components/ui/Alert";
@@ -72,19 +71,32 @@ onMounted(async () => {
     // bootstrap(gtag).then();
   }
 
-  const user = localStorage.getItem("user");
-  if (user) {
-    userStore.setUser(JSON.parse(user));
-
-    /**
-     * Handling an edge-case when the user not found,
-     * and the data still exists on client-side.
-     */
+  // Only call /auth/me if there's no cached session (first load / new tab)
+  // On hard refresh, sessionStorage preserves the token so no round-trip needed
+  if (!userStore.getUserId) {
     try {
-      const permissions = await getPermissions();
-      userStore.setPermissions(permissions.data.permissions);
-    } catch (error) {
-      tokenError(error);
+      const response = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/v1/auth/me`,
+        { withCredentials: true },
+      );
+
+      if (response.data.user) {
+        userStore.setUser({
+          authToken: response.data.authToken || "",
+          userId: response.data.user.userId,
+          name: response.data.user.name,
+          username: response.data.user.username,
+          email: response.data.user.email,
+          avatar: response.data.user.avatar,
+          isOwner: response.data.user.isOwner,
+        });
+
+        const permissions = await getPermissions();
+        userStore.setPermissions(permissions.data.permissions);
+      }
+    } catch (err) {
+      // No cookie or invalid — stay on page, show Login button
+      console.log("Not authenticated via cookie");
     }
   }
 });

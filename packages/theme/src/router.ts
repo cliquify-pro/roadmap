@@ -14,6 +14,12 @@ const routes = [
       {
         path: "",
         name: "Home",
+        beforeEnter: () => {
+          const { user } = useUserStore();
+          if (user.isOwner) {
+            return { path: "/dashboard" };
+          }
+        },
         component: () => import("./pages/Index.vue"),
       },
       {
@@ -107,7 +113,7 @@ const routes = [
         // Is user logged in
         const { getUserId } = useUserStore();
         if (!getUserId) {
-          return next({ name: "Login", query: { redirect: "/dashboard" } });
+          return next({ name: "Home" });
         }
 
         // Check user access to dashboard
@@ -203,13 +209,30 @@ const routes = [
     ],
   },
   {
+    path: "/admin/login",
+    name: "AdminLogin",
+    component: () => import("./pages/AdminLogin.vue"),
+  },
+  {
     path: "/login",
     name: "Login",
+    beforeEnter: () => {
+      const loginUrl =
+        import.meta.env.VITE_CLIQUIFY_LOGIN_URL || "http://localhost:3001";
+      window.location.href = `${loginUrl}/login?redirect=${window.location.origin}`;
+      return false; // abort Vue Router navigation — no component renders
+    },
     component: () => import("./pages/Login.vue"),
   },
   {
     path: "/join",
     name: "Join",
+    beforeEnter: () => {
+      const loginUrl =
+        import.meta.env.VITE_CLIQUIFY_LOGIN_URL || "http://localhost:3001";
+      window.location.href = `${loginUrl}/login?redirect=${window.location.origin}`;
+      return false; // abort Vue Router navigation — no component renders
+    },
     component: () => import("./pages/Join.vue"),
   },
   {
