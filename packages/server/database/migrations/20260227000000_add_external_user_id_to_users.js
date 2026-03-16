@@ -1,6 +1,11 @@
 exports.up = function (knex) {
   return knex.schema.table("users", function (table) {
-    table.integer("external_user_id").notNullable().index().after("userId");
+    table
+      .integer("external_user_id")
+      .notNullable()
+      .unique() // ← adds UNIQUE constraint (fixes ON CONFLICT in migration script)
+      .index()
+      .after("userId");
   });
 };
 
