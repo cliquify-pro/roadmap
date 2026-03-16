@@ -1,3 +1,11 @@
-// Stub: external_user_id column already exists in the users table
-exports.up = () => Promise.resolve();
-exports.down = () => Promise.resolve();
+exports.up = function (knex) {
+  return knex.schema.table("users", function (table) {
+    table.integer("external_user_id").notNullable().index().after("userId");
+  });
+};
+
+exports.down = function (knex) {
+  return knex.schema.table("users", function (table) {
+    table.dropColumn("external_user_id");
+  });
+};
